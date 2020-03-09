@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: integrationhub.hzopen.info
+  kind: Integrationhub
+  playbook: /opt/ansible/playbook.yaml

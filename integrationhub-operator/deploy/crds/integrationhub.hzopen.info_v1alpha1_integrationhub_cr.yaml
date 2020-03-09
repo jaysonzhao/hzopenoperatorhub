@@ -1,0 +1,7 @@
+apiVersion: integrationhub.hzopen.info/v1alpha1
+kind: Integrationhub
+metadata:
+  name: example-integrationhub
+spec:
+  # Add fields here
+  size: 3

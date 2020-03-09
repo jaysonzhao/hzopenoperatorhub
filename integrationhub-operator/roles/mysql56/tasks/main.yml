@@ -1,0 +1,19 @@
+---
+# tasks file for mysql56
+- name: headless service 
+  k8s:
+    definition:
+       apiVersion: v1
+       kind: Service
+       metadata:
+         name: '{{ meta.name }}-mysqlsts'
+         namespace: '{{ meta.namespace }}'
+         labels:
+           app: mysqlsts
+       spec:
+           ports:
+            - name: mysqlsts
+              port: 3306
+           clusterIP: None
+           selector:
+             app: mysqlsts
