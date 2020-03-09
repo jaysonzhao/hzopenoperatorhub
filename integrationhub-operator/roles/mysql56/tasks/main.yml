@@ -9,11 +9,97 @@
          name: '{{ meta.name }}-mysqlsts'
          namespace: '{{ meta.namespace }}'
          labels:
-           app: mysqlsts
+           app: '{{ meta.name }}-mysqlsts'
        spec:
            ports:
-            - name: mysqlsts
+            - name: '{{ meta.name }}-mysqlsts'
               port: 3306
            clusterIP: None
            selector:
-             app: mysqlsts
+             app: '{{ meta.name }}-mysqlsts'
+
+- name: configmap hack mysql case sensitive 
+  k8s:
+    definition:
+       apiVersion: v1
+       kind: ConfigMap
+       metadata:
+          name: '{{ meta.name }}-mysql'
+          namespace: '{{ meta.namespace }}'
+          labels:
+            app: '{{ meta.name }}-mysql'
+       data:
+          my.cnf: |
+             [mysqld]
+             lower_case_table_names=1
+
+
+- name: statefulset setup
+  k8s:
+    definition:
+       apiVersion: apps/v1
+       kind: StatefulSet
+       metadata:
+           name: '{{ meta.name }}-mysqlsts'
+           namespace: '{{ meta.namespace }}'
+       spec:
+         selector:
+            matchLabels:
+             app: '{{ meta.name }}-mysqlsts'
+         serviceName: '{{ meta.name }}-mysqlsts'
+         podManagementPolicy: Parallel
+         replicas: 1
+         template:
+           metadata:
+             labels:
+               app: '{{ meta.name }}-mysqlsts'
+           spec:
+             volumes:
+             - name: mysql-config
+               configMap:
+                   name: '{{ meta.name }}-mysql'
+                   defaultMode: 420
+             terminationGracePeriodSeconds: 10
+             containers:
+             - name: '{{ meta.name }}-mysqlsts'
+               image: mysql:5.6
+               env:
+               - name: MYSQL_ROOT_PASSWORD
+                 value: root
+               - name: MYSQL_DATABASE
+                 value: openagiledb
+               - name: MYSQL_USER
+                 value: admin
+               - name: MYSQL_PASSWORD
+                 value: admin
+               - name: MYSQL_LOWER_CASE_TABLE_NAMES
+                 value: '1'
+                  
+               ports:
+               - containerPort: 3306
+                 name: '{{ meta.name }}-mysql'
+               volumeMounts:
+               - name: '{{ meta.name }}-mysqlsts-data'
+                 mountPath: /var/lib/mysql
+               - name: '{{ meta.name }}-config-map'
+                 mountPath: /etc/mysql/conf.d
+                 
+         volumeClaimTemplates:
+         - metadata:
+             name: '{{ meta.name }}-mysqlsts-data'
+           spec:
+             storageClassName: gp2
+             accessModes: [ "ReadWriteOnce" ]
+             resources:
+               requests:
+                 storage: 3Gi
+         - metadata:
+             name: '{{ meta.name }}-config-map'
+           spec:
+             storageClassName: gp2
+             accessModes: [ "ReadWriteOnce" ]
+             resources:
+               requests:
+                 storage: 3Gi        
+                 
+       
