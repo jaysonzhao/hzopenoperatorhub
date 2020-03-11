@@ -12,7 +12,7 @@
           labels:
             app: '{{ meta.name }}-mysql'
        data:
-         initdb.sql: >
+         initisimdb.sql: >
                       -- MySQL dump 10.13  Distrib 5.7.26, for Win64 (x86_64)
                       --
                       -- Host: localhost    Database: isim
@@ -30,10 +30,14 @@
                       /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
                       /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
                       
+                      CREATE DATABASE corepanel;
+                      CREATE DATABASE isim;
+                      USE DATABASE isim;
+
                       --
                       -- Table structure for table `database_connector`
                       --
-                      
+                     
                       DROP TABLE IF EXISTS `database_connector`;
                       /*!40101 SET @saved_cs_client     = @@character_set_client */;
                       /*!40101 SET character_set_client = utf8 */;
@@ -1281,3 +1285,88 @@
                       /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
                       
                       -- Dump completed on 2019-12-02 18:03:24
+         initlogdb.sql: >
+               -- MySQL dump 10.13  Distrib 5.7.26, for Win64 (x86_64)
+               --
+               -- Host: localhost    Database: camel_log
+               -- ------------------------------------------------------
+               -- Server version	8.0.15
+               
+               /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+               /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+               /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+               /*!40101 SET NAMES utf8 */;
+               /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+               /*!40103 SET TIME_ZONE='+00:00' */;
+               /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+               /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+               /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+               /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+               
+               CREATE DATABASE camel_log;
+               USE DATABASE camel_log;
+               --
+               -- Table structure for table `camel_info_log`
+               --
+               
+               DROP TABLE IF EXISTS `camel_info_log`;
+               /*!40101 SET @saved_cs_client     = @@character_set_client */;
+               /*!40101 SET character_set_client = utf8 */;
+               CREATE TABLE `camel_info_log` (
+                 `id` varchar(100) NOT NULL,
+                 `message_id` varchar(100) NOT NULL COMMENT '队列ID',
+                 `producer_id` varchar(100) NOT NULL COMMENT '生产者ID',
+                 `log_type` varchar(100) NOT NULL COMMENT '日志类型',
+                 `app_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '应用名称',
+                 `template_type` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '模板类型',
+                 `host` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'host',
+                 `camel_http_uri` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Camel请求Uri',
+                 `camel_http_url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'CamelHttpUrl',
+                 `token` text COMMENT '认证Token',
+                 `token_status` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'token状态',
+                 `destination` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '队列名称',
+                 `broker_in_time` timestamp NULL DEFAULT NULL,
+                 `broker_out_time` timestamp NULL DEFAULT NULL,
+                 `properties` text COMMENT '键值对',
+                 `content` blob COMMENT 'Message Details',
+                 `content_hyphen_type` varchar(100) DEFAULT NULL,
+                 `camel_http_method` varchar(100) DEFAULT NULL COMMENT 'Camel请求类型',
+                 `camel_servlet_context_path` varchar(100) DEFAULT NULL COMMENT 'CamelServletContextPath',
+                 `user_hyphen_agent` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '请求客户端类型',
+                 `accept_hyphen_encoding` varchar(100) DEFAULT NULL,
+                 `camel_http_path` varchar(100) DEFAULT NULL,
+                 `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+                 `request_param` text COMMENT '请求参数',
+                 `response_body` text COMMENT '响应体',
+                 `app_name` varchar(100) DEFAULT NULL COMMENT 'Token-应用名称',
+                 `login_name` varchar(100) DEFAULT NULL COMMENT 'Token-拥有者',
+                 `service_id` varchar(100) DEFAULT NULL COMMENT 'Token-服务ID',
+                 `user_id` varchar(100) DEFAULT NULL COMMENT 'Token-拥有者',
+                 PRIMARY KEY (`id`)
+               ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='正常日志记录表';
+               /*!40101 SET character_set_client = @saved_cs_client */;
+               
+               --
+               -- Dumping data for table `camel_info_log`
+               --
+               
+               LOCK TABLES `camel_info_log` WRITE;
+               /*!40000 ALTER TABLE `camel_info_log` DISABLE KEYS */;
+               INSERT INTO `camel_info_log` VALUES ('info_log:5d50ded7-c70c-4f83-9928-6f6aaff47331','ID:DESKTOP-9V549B5-65448-1577960884355-1:3:1:1:1','ID:DESKTOP-9V549B5-65448-1577960884355-1:3','info','openshift-db-template-app','db','localhost:8080','/rest/service/db','http://localhost:8080/rest/service/db','eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMDE5LTEyLTMxIiwiaWF0IjoxNTc3NzY4Mjg5LCJzdWIiOiJ7XCJhcHBOYW1lXCI6XCJkYXRhYmFzZS1hcHBcIixcImxvZ2luTmFtZVwiOlwiemhhbmd4ZlwiLFwic2VydmljZUlkXCI6XCJzZXJ2aWNlX2luZm9JZDowYjYyMzMyMi0yYzIyLTQ0MzgtOWIzMi05YzI0OWE4MzVhYTFcIixcInVzZXJJZFwiOlwiemhhbmd4ZlwifSIsImlzcyI6InBhY3RlcmEiLCJleHAiOjYzMDkxMzY1Nzl9.nf8Qh6g2dsIu-rEMhF8cIll_DhK_b1SsIn5wwPwLk5A','-2','queue://amqp:queue:q.hzinte.logq','2020-01-02 02:28:10','2020-01-02 02:28:10','{\"JMS_AMQP_NATIVE\":\"TRUE\",\"templateType\":\"db\",\"tokenStatus\":\"-2\",\"responseBody\":\"{\\\"msg\\\":\\\"SuccessFully\\\",\\\"code\\\":0,\\\"data\\\":[{\\\"deployment_time\\\":{\\\"date\\\":31,\\\"hours\\\":4,\\\"seconds\\\":36,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":17,\\\"time\\\":1577765856000,\\\"day\\\":2},\\\"create_time\\\":{\\\"date\\\":31,\\\"hours\\\":4,\\\"seconds\\\":51,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":11,\\\"time\\\":1577765511000,\\\"day\\\":2},\\\"service_name\\\":\\\"DB服务\\\",\\\"deployment_status\\\":1,\\\"description\\\":\\\"\\\",\\\"service_system\\\":\\\"f78af4b4-d69d-4b8e-b33b-1535af0cbfd1\\\",\\\"version\\\":\\\"1.0\\\",\\\"service_class\\\":\\\"1\\\",\\\"create_by\\\":\\\"zhangxf\\\",\\\"update_time\\\":{\\\"date\\\":31,\\\"hours\\\":4,\\\"seconds\\\":36,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":17,\\\"time\\\":1577765856000,\\\"day\\\":2},\\\"id\\\":\\\"service_infoId:0b623322-2c22-4438-9b32-9c249a835aa1\\\",\\\"update_by\\\":\\\"zhangxf\\\",\\\"service_second_class\\\":\\\"2\\\"},{\\\"deployment_time\\\":{\\\"date\\\":31,\\\"hours\\\":3,\\\"seconds\\\":19,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":9,\\\"time\\\":1577761759000,\\\"day\\\":2},\\\"create_time\\\":{\\\"date\\\":31,\\\"hours\\\":3,\\\"seconds\\\":8,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":9,\\\"time\\\":1577761748000,\\\"day\\\":2},\\\"service_name\\\":\\\"数据库服务\\\",\\\"deployment_status\\\":1,\\\"description\\\":\\\"\\\",\\\"service_system\\\":\\\"f78af4b4-d69d-4b8e-b33b-1535af0cbfd1\\\",\\\"version\\\":\\\"1.0\\\",\\\"service_class\\\":\\\"1\\\",\\\"create_by\\\":\\\"zhangxf\\\",\\\"update_time\\\":{\\\"date\\\":31,\\\"hours\\\":3,\\\"seconds\\\":19,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":9,\\\"time\\\":1577761759000,\\\"day\\\":2},\\\"id\\\":\\\"service_infoId:68b37a9f-56e5-4c23-8da9-597599caf981\\\",\\\"service_second_class\\\":\\\"2\\\"}]}\",\"JMS_AMQP_MA_x-opt-jms-msg-type\":\"5\",\"breadcrumbId\":\"ID-simonMeng-1575603944977-0-1\",\"Content_HYPHEN_Type\":\"application/json\",\"appId\":\"openshift-db-template-app\",\"cache_HYPHEN_control\":\"no-cache\",\"CamelHttpMethod\":\"POST\",\"CamelServletContextPath\":\"/service/db\",\"JMS_AMQP_PROPERTIES\":\"TRUE\",\"host\":\"localhost:8080\",\"connection\":\"keep-alive\",\"content_HYPHEN_length\":\"61\",\"startTime\":\"1.5756E+12\",\"JMS_AMQP_HEADER\":\"TRUE\",\"postman_HYPHEN_token\":\"2d2178e8-d6d1-4ea9-b407-b48d8f08a934\",\"timestamp\":1577960889661,\"CamelHttpUrl\":\"http://localhost:8080/rest/service/db\",\"CamelHttpCharacterEncoding\":\"UTF-8\",\"requestParam\":\"{\\\"ss\\\":\\\"ll\\\"}\",\"accept\":\"*/*\",\"token\":\"eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMDE5LTEyLTMxIiwiaWF0IjoxNTc3NzY4Mjg5LCJzdWIiOiJ7XCJhcHBOYW1lXCI6XCJkYXRhYmFzZS1hcHBcIixcImxvZ2luTmFtZVwiOlwiemhhbmd4ZlwiLFwic2VydmljZUlkXCI6XCJzZXJ2aWNlX2luZm9JZDowYjYyMzMyMi0yYzIyLTQ0MzgtOWIzMi05YzI0OWE4MzVhYTFcIixcInVzZXJJZFwiOlwiemhhbmd4ZlwifSIsImlzcyI6InBhY3RlcmEiLCJleHAiOjYzMDkxMzY1Nzl9.nf8Qh6g2dsIu-rEMhF8cIll_DhK_b1SsIn5wwPwLk5A\",\"user_HYPHEN_agent\":\"PostmanRuntime/7.20.1\",\"serviceAction\":\"select\",\"accept_HYPHEN_encoding\":\"gzip, deflate\",\"JMS_AMQP_MA_x-opt-jms-dest\":\"0\",\"CamelHttpUri\":\"/rest/service/db\",\"CamelHttpPath\":\"\"}',_binary '{\"JMS_AMQP_NATIVE\":\"TRUE\",\"templateType\":\"db\",\"tokenStatus\":\"-2\",\"responseBody\":\"{\\\"msg\\\":\\\"SuccessFully\\\",\\\"code\\\":0,\\\"data\\\":[{\\\"deployment_time\\\":{\\\"date\\\":31,\\\"hours\\\":4,\\\"seconds\\\":36,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":17,\\\"time\\\":1577765856000,\\\"day\\\":2},\\\"create_time\\\":{\\\"date\\\":31,\\\"hours\\\":4,\\\"seconds\\\":51,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":11,\\\"time\\\":1577765511000,\\\"day\\\":2},\\\"service_name\\\":\\\"DB服务\\\",\\\"deployment_status\\\":1,\\\"description\\\":\\\"\\\",\\\"service_system\\\":\\\"f78af4b4-d69d-4b8e-b33b-1535af0cbfd1\\\",\\\"version\\\":\\\"1.0\\\",\\\"service_class\\\":\\\"1\\\",\\\"create_by\\\":\\\"zhangxf\\\",\\\"update_time\\\":{\\\"date\\\":31,\\\"hours\\\":4,\\\"seconds\\\":36,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":17,\\\"time\\\":1577765856000,\\\"day\\\":2},\\\"id\\\":\\\"service_infoId:0b623322-2c22-4438-9b32-9c249a835aa1\\\",\\\"update_by\\\":\\\"zhangxf\\\",\\\"service_second_class\\\":\\\"2\\\"},{\\\"deployment_time\\\":{\\\"date\\\":31,\\\"hours\\\":3,\\\"seconds\\\":19,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":9,\\\"time\\\":1577761759000,\\\"day\\\":2},\\\"create_time\\\":{\\\"date\\\":31,\\\"hours\\\":3,\\\"seconds\\\":8,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":9,\\\"time\\\":1577761748000,\\\"day\\\":2},\\\"service_name\\\":\\\"数据库服务\\\",\\\"deployment_status\\\":1,\\\"description\\\":\\\"\\\",\\\"service_system\\\":\\\"f78af4b4-d69d-4b8e-b33b-1535af0cbfd1\\\",\\\"version\\\":\\\"1.0\\\",\\\"service_class\\\":\\\"1\\\",\\\"create_by\\\":\\\"zhangxf\\\",\\\"update_time\\\":{\\\"date\\\":31,\\\"hours\\\":3,\\\"seconds\\\":19,\\\"month\\\":11,\\\"nanos\\\":0,\\\"timezoneOffset\\\":0,\\\"year\\\":119,\\\"minutes\\\":9,\\\"time\\\":1577761759000,\\\"day\\\":2},\\\"id\\\":\\\"service_infoId:68b37a9f-56e5-4c23-8da9-597599caf981\\\",\\\"service_second_class\\\":\\\"2\\\"}]}\",\"JMS_AMQP_MA_x-opt-jms-msg-type\":\"5\",\"breadcrumbId\":\"ID-simonMeng-1575603944977-0-1\",\"Content_HYPHEN_Type\":\"application/json\",\"appId\":\"openshift-db-template-app\",\"cache_HYPHEN_control\":\"no-cache\",\"CamelHttpMethod\":\"POST\",\"CamelServletContextPath\":\"/service/db\",\"JMS_AMQP_PROPERTIES\":\"TRUE\",\"host\":\"localhost:8080\",\"connection\":\"keep-alive\",\"content_HYPHEN_length\":\"61\",\"startTime\":\"1.5756E+12\",\"JMS_AMQP_HEADER\":\"TRUE\",\"postman_HYPHEN_token\":\"2d2178e8-d6d1-4ea9-b407-b48d8f08a934\",\"CamelHttpUrl\":\"http://localhost:8080/rest/service/db\",\"CamelHttpCharacterEncoding\":\"UTF-8\",\"requestParam\":\"{\\\"ss\\\":\\\"ll\\\"}\",\"accept\":\"*/*\",\"token\":\"eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMDE5LTEyLTMxIiwiaWF0IjoxNTc3NzY4Mjg5LCJzdWIiOiJ7XCJhcHBOYW1lXCI6XCJkYXRhYmFzZS1hcHBcIixcImxvZ2luTmFtZVwiOlwiemhhbmd4ZlwiLFwic2VydmljZUlkXCI6XCJzZXJ2aWNlX2luZm9JZDowYjYyMzMyMi0yYzIyLTQ0MzgtOWIzMi05YzI0OWE4MzVhYTFcIixcInVzZXJJZFwiOlwiemhhbmd4ZlwifSIsImlzcyI6InBhY3RlcmEiLCJleHAiOjYzMDkxMzY1Nzl9.nf8Qh6g2dsIu-rEMhF8cIll_DhK_b1SsIn5wwPwLk5A\",\"user_HYPHEN_agent\":\"PostmanRuntime/7.20.1\",\"serviceAction\":\"select\",\"accept_HYPHEN_encoding\":\"gzip, deflate\",\"JMS_AMQP_MA_x-opt-jms-dest\":\"0\",\"CamelHttpUri\":\"/rest/service/db\",\"CamelHttpPath\":\"\"}','application/json','POST','/service/db','PostmanRuntime/7.20.1','gzip, deflate','','2020-01-02 02:28:10','{\"ss\":\"ll\"}','{\"msg\":\"SuccessFully\",\"code\":0,\"data\":[{\"deployment_time\":{\"date\":31,\"hours\":4,\"seconds\":36,\"month\":11,\"nanos\":0,\"timezoneOffset\":0,\"year\":119,\"minutes\":17,\"time\":1577765856000,\"day\":2},\"create_time\":{\"date\":31,\"hours\":4,\"seconds\":51,\"month\":11,\"nanos\":0,\"timezoneOffset\":0,\"year\":119,\"minutes\":11,\"time\":1577765511000,\"day\":2},\"service_name\":\"DB服务\",\"deployment_status\":1,\"description\":\"\",\"service_system\":\"f78af4b4-d69d-4b8e-b33b-1535af0cbfd1\",\"version\":\"1.0\",\"service_class\":\"1\",\"create_by\":\"zhangxf\",\"update_time\":{\"date\":31,\"hours\":4,\"seconds\":36,\"month\":11,\"nanos\":0,\"timezoneOffset\":0,\"year\":119,\"minutes\":17,\"time\":1577765856000,\"day\":2},\"id\":\"service_infoId:0b623322-2c22-4438-9b32-9c249a835aa1\",\"update_by\":\"zhangxf\",\"service_second_class\":\"2\"},{\"deployment_time\":{\"date\":31,\"hours\":3,\"seconds\":19,\"month\":11,\"nanos\":0,\"timezoneOffset\":0,\"year\":119,\"minutes\":9,\"time\":1577761759000,\"day\":2},\"create_time\":{\"date\":31,\"hours\":3,\"seconds\":8,\"month\":11,\"nanos\":0,\"timezoneOffset\":0,\"year\":119,\"minutes\":9,\"time\":1577761748000,\"day\":2},\"service_name\":\"数据库服务\",\"deployment_status\":1,\"description\":\"\",\"service_system\":\"f78af4b4-d69d-4b8e-b33b-1535af0cbfd1\",\"version\":\"1.0\",\"service_class\":\"1\",\"create_by\":\"zhangxf\",\"update_time\":{\"date\":31,\"hours\":3,\"seconds\":19,\"month\":11,\"nanos\":0,\"timezoneOffset\":0,\"year\":119,\"minutes\":9,\"time\":1577761759000,\"day\":2},\"id\":\"service_infoId:68b37a9f-56e5-4c23-8da9-597599caf981\",\"service_second_class\":\"2\"}]}','database-app','zhangxf','service_infoId:0b623322-2c22-4438-9b32-9c249a835aa1','zhangxf');
+               /*!40000 ALTER TABLE `camel_info_log` ENABLE KEYS */;
+               UNLOCK TABLES;
+               
+               --
+               -- Dumping routines for database 'camel_log'
+               --
+               /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+               
+               /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+               /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+               /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+               /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+               /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+               /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+               /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+               
+               -- Dump completed on 2020-01-02 18:32:41
