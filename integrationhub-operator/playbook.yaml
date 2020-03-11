@@ -2,5 +2,6 @@
   gather_facts: no
   tasks:
   - import_role:
+      name: "initdb"
       name: "mysql56"
 
