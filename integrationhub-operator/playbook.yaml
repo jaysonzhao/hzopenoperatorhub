@@ -3,5 +3,6 @@
   tasks:
   - import_role:
       name: "initdb"
+  - import_role:
       name: "mysql56"
 
