@@ -13,12 +13,6 @@
             app: '{{ meta.name }}-mysql'
        data:
          initisimdb.sql: >
-                      -- MySQL dump 10.13  Distrib 5.7.26, for Win64 (x86_64)
-                      --
-                      -- Host: localhost    Database: isim
-                      -- ------------------------------------------------------
-                      -- Server version	8.0.15
-                      
                       /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
                       /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
                       /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -29,19 +23,19 @@
                       /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
                       /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
                       /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-                      -- create the databases
+                     
                       CREATE DATABASE IF NOT EXISTS corepanel;
 
-                      -- create the users for each database
+                      
                       CREATE USER 'corepanel'@'%' IDENTIFIED BY 'corepanel';
                       GRANT CREATE, ALTER, INDEX, LOCK TABLES, REFERENCES, UPDATE, DELETE, DROP, SELECT, INSERT ON `corepanel`.* TO 'corepanel'@'%';
                       
                       FLUSH PRIVILEGES;
                      
-                      -- create the databases
+                     
                       CREATE DATABASE IF NOT EXISTS isim;
 
-                      -- create the users for each database
+                     
                       CREATE USER 'isim'@'%' IDENTIFIED BY 'isim';
                       GRANT CREATE, ALTER, INDEX, LOCK TABLES, REFERENCES, UPDATE, DELETE, DROP, SELECT, INSERT ON `isim`.* TO 'isim'@'%';
                       
@@ -1299,12 +1293,7 @@
                       /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
                       
                       -- Dump completed on 2019-12-02 18:03:24
-         initlogdb.sql: >
-               -- MySQL dump 10.13  Distrib 5.7.26, for Win64 (x86_64)
-               --
-               -- Host: localhost    Database: camel_log
-               -- ------------------------------------------------------
-               -- Server version	8.0.15
+         initlogdb.sql: >           
                
                /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
                /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1316,10 +1305,10 @@
                /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
                /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
                /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-               -- create the databases
+               
                CREATE DATABASE IF NOT EXISTS camel_log;
 
-                  -- create the users for each database
+                
                CREATE USER 'camel_log'@'%' IDENTIFIED BY 'camel_log';
                GRANT CREATE, ALTER, INDEX, LOCK TABLES, REFERENCES, UPDATE, DELETE, DROP, SELECT, INSERT ON `camel_log`.* TO 'camel_log'@'%';
                       
