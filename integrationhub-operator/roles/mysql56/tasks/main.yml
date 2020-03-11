@@ -33,6 +33,29 @@
              [mysqld]
              lower_case_table_names=1
 
+- name: configmap hack mysql initdb
+  k8s:
+    definition:
+       apiVersion: v1
+       kind: ConfigMap
+       metadata:
+          name: '{{ meta.name }}-mysql-initdb-config'
+          namespace: '{{ meta.namespace }}'
+          labels:
+            app: '{{ meta.name }}-mysql'
+       data:
+         initdb.sql: >
+             CREATE TABLE friends (id INT, name VARCHAR(256), age INT, gender
+             VARCHAR(3));
+         
+             INSERT INTO friends VALUES (1, 'John Smith', 32, 'm');
+         
+             INSERT INTO friends VALUES (2, 'Lilian Worksmith', 29, 'f');
+         
+             INSERT INTO friends VALUES (3, 'Michael Rupert', 27, 'm');
+
+
+
 
 - name: statefulset setup
   k8s:
@@ -55,9 +78,13 @@
                app: '{{ meta.name }}-mysqlsts'
            spec:
              volumes:
-             - name: mysql-config
+             - name: '{{ meta.name }}-config-map'
                configMap:
                    name: '{{ meta.name }}-mysql'
+                   defaultMode: 420
+             - name: '{{ meta.name }}-mysql-initdb'
+               configMap:
+                   name: '{{ meta.name }}-mysql-initdb-config'
                    defaultMode: 420
              terminationGracePeriodSeconds: 10
              containers:
@@ -74,7 +101,7 @@
                  value: admin
                - name: MYSQL_LOWER_CASE_TABLE_NAMES
                  value: '1'
-                  
+            
                ports:
                - containerPort: 3306
                  name: '{{ meta.name }}-mysql'
@@ -83,6 +110,8 @@
                  mountPath: /var/lib/mysql
                - name: '{{ meta.name }}-config-map'
                  mountPath: /etc/mysql/conf.d
+               - name: '{{ meta.name }}-mysql-initdb'
+                 mountPath: /docker-entrypoint-initdb.d
                  
          volumeClaimTemplates:
          - metadata:
@@ -93,13 +122,5 @@
              resources:
                requests:
                  storage: 3Gi
-         - metadata:
-             name: '{{ meta.name }}-config-map'
-           spec:
-             storageClassName: gp2
-             accessModes: [ "ReadWriteOnce" ]
-             resources:
-               requests:
-                 storage: 3Gi        
-                 
+        
        
