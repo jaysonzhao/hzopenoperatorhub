@@ -6,8 +6,11 @@
   tasks:
   - import_role:
       name: "initdb"
-      when: mysqlsize>0
+      when: mysqlsize|int != 0
   - import_role:
       name: "mysql56"
-      when: mysqlsize>0
+      when: mysqlsize|int != 0
+  - import_role:
+    name: "amq"
+    when: amqsize|int != 0
 
