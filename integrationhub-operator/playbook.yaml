@@ -1,8 +1,13 @@
 - hosts: localhost
+  vars:
+     mysqlsize: "{{ mysqlsize | default(0) }}"
+     amqsize: "{{ amqsize | default(0) }}"
   gather_facts: no
   tasks:
   - import_role:
       name: "initdb"
+      when: mysqlsize>0
   - import_role:
       name: "mysql56"
+      when: mysqlsize>0
 
