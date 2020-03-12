@@ -78,3 +78,39 @@ rules:
   - patch
   - update
   - watch
+- verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  apiGroups:
+    - build.openshift.io
+  resources:
+    - buildconfigs
+- verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  apiGroups:
+    - image.openshift.io
+  resources:
+    - imagestreams
+- verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  apiGroups:
+    - apps.openshift.io
+  resources:
+    - deploymentconfigs

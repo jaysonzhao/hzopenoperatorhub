@@ -122,7 +122,7 @@
           labels:
             app: '{{ meta.name }}-activemq'
           name: '{{ meta.name }}-activemq'
-        namespace: '{{ meta.namespace }}'
+          namespace: '{{ meta.namespace }}'
         spec:
           ports:
           - name: 8161-tcp
