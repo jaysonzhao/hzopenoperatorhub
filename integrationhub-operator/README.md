@@ -8,3 +8,4 @@ PODTODEL="$(oc get pod |grep inte|while read c1 c2; do echo $c1; done)"
 oc delete pod $PODTODEL
 oc apply -f deploy/crds/integrationhub.hzopen.info_v1alpha1_integrationhub_cr.yaml
 ```
+
