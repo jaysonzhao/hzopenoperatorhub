@@ -322,8 +322,9 @@
           name: '{{ meta.name }}-ssh'
           namespace: '{{ meta.namespace }}'
         spec:
-          host: secure
           port:
             targetPort: 10022-tcp
           to:
             name: '{{ meta.name }}-gogs'
+          tls:
+            termination: passthrough
